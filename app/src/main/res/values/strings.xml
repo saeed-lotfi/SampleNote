@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Sample Note</string>
     <string name="notes">Notes</string>
+    <string name="note">Note</string>
+    <string name="back">Back</string>
+    <string name="note_lis">Note List</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
 </resources>

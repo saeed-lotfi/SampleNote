@@ -29,15 +29,18 @@ import saeid.lotfi.samplenote.R
 
 @Composable
 fun Home(
+    onNoteClicked: (Long?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var destination by rememberSaveable { mutableStateOf(Destination.Notes) }
+    var destination by rememberSaveable { mutableStateOf(Destination.NotesList) }
     Scaffold(
         modifier = modifier,
         topBar = { HomeAppBar(title = stringResource(destination.label)) },
         floatingActionButton = {
-            if (destination == Destination.Notes) {
-                FloatingActionButton(onClick = { }) {
+            if (destination == Destination.NotesList) {
+                FloatingActionButton(onClick = {
+                    onNoteClicked.invoke(0)
+                }) {
                     Icon(Icons.Default.Add, contentDescription = "Add Note")
                 }
             }
@@ -56,7 +59,7 @@ fun Home(
             modifier = modifier,
         ) {
             composable(
-                route = Destination.Notes.route,
+                route = Destination.NotesList.route,
                 enterTransition = { AnimationConstants.enterTransition },
                 exitTransition = { AnimationConstants.exitTransition },
             ) {
@@ -88,8 +91,8 @@ private enum class Destination(
     @StringRes val label: Int,
     val imageVector: ImageVector,
 ) {
-    Notes(
-        route = "notes",
+    NotesList(
+        route = "notes-list",
         label = R.string.notes,
         imageVector = Icons.AutoMirrored.Outlined.Notes,
     ),
