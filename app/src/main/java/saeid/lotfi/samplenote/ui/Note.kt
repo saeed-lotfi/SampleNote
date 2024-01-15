@@ -19,6 +19,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -29,13 +30,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import saeid.lotfi.samplenote.R
 
 @Composable
 fun Note(
-    noteId: Long?,
+    noteId: Long,
     modifier: Modifier,
-    onBackPressed: () -> Unit,
+    onBackPressed: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -57,9 +60,14 @@ fun Note(
 }
 
 @Composable
-fun NoteContent(modifier: Modifier) {
+fun NoteContent(
+    modifier: Modifier,
+    viewModel: NoteViewModel = hiltViewModel(),
+) {
     var title by rememberSaveable { mutableStateOf("") }
     var description by rememberSaveable { mutableStateOf("") }
+
+    var coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = modifier,
@@ -112,7 +120,11 @@ fun NoteContent(modifier: Modifier) {
         )
 
         Button(
-            onClick = { },
+            onClick = {
+                coroutineScope.launch {
+                    viewModel.insert(title, description)
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(64.dp)
@@ -151,7 +163,7 @@ private fun NoteAppBar(
 @Composable
 private fun NoteAppBarPreview() {
     Note(
-        noteId = null,
+        noteId = 0,
         onBackPressed = {},
         modifier = Modifier,
     )

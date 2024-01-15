@@ -55,7 +55,7 @@ fun MainNavigation(
                 navArgument("noteId") { type = NavType.LongType },
             ),
         ) { backStackEntry ->
-            val noteId = backStackEntry.arguments?.getLong("noteId")
+            val noteId = backStackEntry.arguments?.getLong("noteId") ?: 0L
             Note(
                 noteId = noteId,
                 modifier = modifier,
