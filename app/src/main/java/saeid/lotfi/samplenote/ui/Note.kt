@@ -18,10 +18,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -31,14 +27,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import kotlinx.coroutines.launch
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import saeid.lotfi.samplenote.R
 
 @Composable
 fun Note(
     noteId: Long,
     modifier: Modifier,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
@@ -64,10 +60,8 @@ fun NoteContent(
     modifier: Modifier,
     viewModel: NoteViewModel = hiltViewModel(),
 ) {
-    var title by rememberSaveable { mutableStateOf("") }
-    var description by rememberSaveable { mutableStateOf("") }
-
-    var coroutineScope = rememberCoroutineScope()
+    val titleInput by viewModel.titleInput.collectAsStateWithLifecycle()
+    val descriptionInput by viewModel.descriptionInput.collectAsStateWithLifecycle()
 
     Column(
         modifier = modifier,
@@ -82,9 +76,9 @@ fun NoteContent(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
             ),
-            value = title,
-            onValueChange = {
-                title = it
+            value = titleInput,
+            onValueChange = { title ->
+                viewModel.titleChanged(title)
             },
             singleLine = true,
             textStyle = TextStyle(
@@ -110,9 +104,9 @@ fun NoteContent(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
             ),
-            value = description,
-            onValueChange = {
-                description = it
+            value = descriptionInput,
+            onValueChange = { description ->
+                viewModel.descriptionChanged(description)
             },
             placeholder = {
                 Text(stringResource(R.string.description))
@@ -121,9 +115,7 @@ fun NoteContent(
 
         Button(
             onClick = {
-                coroutineScope.launch {
-                    viewModel.insert(title, description)
-                }
+                viewModel.insert()
             },
             modifier = Modifier
                 .fillMaxWidth()
