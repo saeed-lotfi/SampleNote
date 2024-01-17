@@ -65,6 +65,7 @@ fun Home(
             ) {
                 NotesList(
                     contentPadding = innerPadding,
+                    noteClicked = onNoteClicked,
                 )
             }
         }
