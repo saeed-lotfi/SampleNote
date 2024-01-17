@@ -1,5 +1,6 @@
 package saeid.lotfi.samplenote.repository
 
+import kotlinx.coroutines.flow.Flow
 import saeid.lotfi.samplenote.data.NoteDao
 import saeid.lotfi.samplenote.model.NoteDetail
 import javax.inject.Inject
@@ -11,5 +12,9 @@ class NoteRepository @Inject constructor(
 ) {
     suspend fun insert(noteDetail: NoteDetail): Long {
         return noteDao.insert(noteDetail)
+    }
+
+    fun getAll(): Flow<List<NoteDetail>> {
+        return noteDao.getAll()
     }
 }
