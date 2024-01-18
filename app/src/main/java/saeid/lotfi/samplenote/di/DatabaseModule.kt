@@ -22,4 +22,7 @@ object DatabaseModule {
 
     @Provides
     fun provideNoteDao(appDatabase: AppDatabase) = appDatabase.noteDao()
+
+    @Provides
+    fun provideTagDao(appDatabase: AppDatabase) = appDatabase.tagDao()
 }
