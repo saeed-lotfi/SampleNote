@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TagViewModel @Inject constructor(
-    private val tagRepository: TagRepository
+    private val tagRepository: TagRepository,
 ) : ViewModel() {
 
     val getAllTags =
@@ -30,5 +30,4 @@ class TagViewModel @Inject constructor(
             tagRepository.insert(tagModel)
         }
     }
-
 }

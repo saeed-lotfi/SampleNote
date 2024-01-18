@@ -22,9 +22,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun Tags(
     modifier: Modifier,
     contentPadding: PaddingValues,
-    viewModel: TagViewModel = hiltViewModel()
+    viewModel: TagViewModel = hiltViewModel(),
 ) {
-
     val tags = viewModel.getAllTags.collectAsStateWithLifecycle()
 
     LazyRow(
@@ -38,7 +37,7 @@ fun Tags(
                     color = tags.value[it].tagColor,
                     onTailClicked = {
                         viewModel.deleteTag(tags.value[it].tagId)
-                    }
+                    },
                 )
             }
         },
@@ -64,16 +63,16 @@ fun TagItem(
             disabledContainerColor = Color.Transparent,
             disabledLabelColor = Color.Transparent,
             disabledLeadingIconContentColor = Color.Transparent,
-            disabledTrailingIconContentColor = Color.Transparent
+            disabledTrailingIconContentColor = Color.Transparent,
 
-        ),
+            ),
         label = { Text(text) },
         leadingIcon = {
             androidx.compose.material3.Surface(
                 color = Color(color),
                 contentColor = Color.White,
                 shape = androidx.compose.foundation.shape.CircleShape,
-                modifier = Modifier.size(InputChipDefaults.AvatarSize)
+                modifier = Modifier.size(InputChipDefaults.AvatarSize),
             ) {
             }
         },
@@ -85,9 +84,9 @@ fun TagItem(
                     .size(InputChipDefaults.AvatarSize)
                     .clickable {
                         onTailClicked.invoke()
-                    }
+                    },
 
-            )
+                )
         },
     )
 }
@@ -99,6 +98,6 @@ fun TagItemPreview() {
         modifier = Modifier,
         text = "Tag",
         color = 0xFF9CCC65,
-        onTailClicked = {}
+        onTailClicked = {},
     )
 }

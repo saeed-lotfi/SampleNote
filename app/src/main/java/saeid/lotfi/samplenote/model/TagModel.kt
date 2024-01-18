@@ -8,5 +8,5 @@ class TagModel(
     @PrimaryKey(autoGenerate = true)
     val tagId: Long = 0,
     val tagTitle: String,
-    val tagColor: Long
+    val tagColor: Long,
 )
