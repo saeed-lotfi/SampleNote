@@ -1,4 +1,4 @@
-package saeid.lotfi.samplenote.ui
+package saeid.lotfi.samplenote.ui.note
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

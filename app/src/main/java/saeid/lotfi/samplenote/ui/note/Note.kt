@@ -1,4 +1,4 @@
-package saeid.lotfi.samplenote.ui
+package saeid.lotfi.samplenote.ui.note
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
