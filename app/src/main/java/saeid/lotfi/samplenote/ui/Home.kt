@@ -3,6 +3,7 @@ package saeid.lotfi.samplenote.ui
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Notes
+import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -26,6 +27,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import saeid.lotfi.samplenote.R
+import saeid.lotfi.samplenote.ui.note.NotesList
+import saeid.lotfi.samplenote.ui.tags.TagsScreen
 
 @Composable
 fun Home(
@@ -38,9 +41,7 @@ fun Home(
         topBar = { HomeAppBar(title = stringResource(destination.label)) },
         floatingActionButton = {
             if (destination == Destination.NotesList) {
-                FloatingActionButton(onClick = {
-                    onNoteClicked.invoke(0)
-                }) {
+                FloatingActionButton(onClick = { onNoteClicked.invoke(0) }) {
                     Icon(Icons.Default.Add, contentDescription = "Add Note")
                 }
             }
@@ -66,6 +67,16 @@ fun Home(
                 NotesList(
                     contentPadding = innerPadding,
                     noteClicked = onNoteClicked,
+                )
+            }
+            composable(
+                route = Destination.Tags.route,
+                enterTransition = { AnimationConstants.enterTransition },
+                exitTransition = { AnimationConstants.exitTransition },
+            ) {
+                TagsScreen(
+                    contentPadding = innerPadding,
+                    modifier = Modifier,
                 )
             }
         }
@@ -96,6 +107,11 @@ private enum class Destination(
         route = "notes-list",
         label = R.string.notes,
         imageVector = Icons.AutoMirrored.Outlined.Notes,
+    ),
+    Tags(
+        route = "tags",
+        label = R.string.tags,
+        imageVector = Icons.AutoMirrored.Outlined.Sort,
     ),
 }
 

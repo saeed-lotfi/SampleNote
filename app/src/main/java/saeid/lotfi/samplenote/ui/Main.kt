@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import saeid.lotfi.samplenote.ui.note.Note
 import saeid.lotfi.samplenote.ui.theme.SampleNoteTheme
 
 @Composable
