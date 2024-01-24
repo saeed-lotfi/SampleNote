@@ -28,7 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import saeid.lotfi.samplenote.R
 import saeid.lotfi.samplenote.ui.note.NotesList
-import saeid.lotfi.samplenote.ui.tags.Tags
+import saeid.lotfi.samplenote.ui.tags.TagsScreen
 
 @Composable
 fun Home(
@@ -40,10 +40,10 @@ fun Home(
         modifier = modifier,
         topBar = { HomeAppBar(title = stringResource(destination.label)) },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                onNoteClicked.invoke(0)
-            }) {
-                Icon(Icons.Default.Add, contentDescription = "Add Note")
+            if (destination == Destination.NotesList) {
+                FloatingActionButton(onClick = { onNoteClicked.invoke(0) }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add Note")
+                }
             }
         },
         bottomBar = {
@@ -74,9 +74,9 @@ fun Home(
                 enterTransition = { AnimationConstants.enterTransition },
                 exitTransition = { AnimationConstants.exitTransition },
             ) {
-                Tags(
+                TagsScreen(
                     contentPadding = innerPadding,
-                    modifier = modifier,
+                    modifier = Modifier,
                 )
             }
         }
