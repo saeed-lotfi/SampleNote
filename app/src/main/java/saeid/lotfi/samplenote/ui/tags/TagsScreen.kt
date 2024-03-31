@@ -1,11 +1,12 @@
 package saeid.lotfi.samplenote.ui.tags
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -16,15 +17,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,27 +37,28 @@ import saeid.lotfi.samplenote.model.TagModel
 
 @Composable
 fun TagsScreen(
-    modifier: Modifier,
-    contentPadding: PaddingValues,
+    modifier: Modifier = Modifier,
     viewModel: TagViewModel = hiltViewModel(),
 ) {
     val tags = viewModel.getAllTags.collectAsStateWithLifecycle()
 
     Tags(
         modifier = modifier,
-        contentPadding = contentPadding,
         tags = tags,
         onTagAdded = { tagName ->
             viewModel.insertOrUpdateTag(TagModel(tagTitle = tagName, tagColor = 0xFF9CCC65))
+        },
+        onTagRemoved = { tagId ->
+            viewModel.deleteTag(tagId)
         },
     )
 }
 
 @Composable
 fun Tags(
-    contentPadding: PaddingValues,
     tags: State<List<TagModel>>,
     onTagAdded: (String) -> Unit,
+    onTagRemoved: (Long) -> Unit,
     modifier: Modifier,
 ) {
     ConstraintLayout(modifier = modifier) {
@@ -65,10 +70,11 @@ fun Tags(
                     top.linkTo(parent.top)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(input.top)
-                },
-            contentPadding = contentPadding,
+                }
+                .padding(bottom = 50.dp),
+
             tags = tags,
+            onTagRemoved = onTagRemoved,
         )
         TagInput(
             modifier = Modifier.constrainAs(input) {
@@ -85,20 +91,20 @@ fun Tags(
 @Composable
 fun TagList(
     modifier: Modifier,
-    contentPadding: PaddingValues,
     tags: State<List<TagModel>>,
+    onTagRemoved: (Long) -> Unit
 ) {
-    LazyRow(
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(2),
         modifier = modifier,
-        contentPadding = contentPadding,
         content = {
             items(tags.value.size) {
                 TagItem(
-                    modifier = Modifier,
+                    modifier = Modifier.padding(4.dp),
                     text = tags.value[it].tagTitle,
                     color = tags.value[it].tagColor,
                     onTailClicked = {
-                        // nothing
+                        onTagRemoved.invoke(tags.value[it].tagId)
                     },
                 )
             }
@@ -111,18 +117,25 @@ fun TagInput(
     modifier: Modifier,
     onTagAdded: (String) -> Unit,
 ) {
-    val tagName by remember { mutableStateOf("") }
+    var tagName by remember { mutableStateOf("") }
 
     Row(
         modifier = modifier,
     ) {
         TextField(
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+            ),
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
             value = tagName,
             onValueChange = {
-                // nothing
+                tagName = it
             },
             placeholder = {
                 Text(stringResource(R.string.tag))
@@ -131,7 +144,10 @@ fun TagInput(
         IconButton(
             modifier = Modifier,
             onClick = {
-                onTagAdded.invoke(tagName)
+                if (tagName.isNotEmpty() && tagName.length < 10) {
+                    onTagAdded.invoke(tagName)
+                    tagName = ""
+                }
             },
         ) {
             Icon(
@@ -166,7 +182,12 @@ fun TagItem(
             disabledTrailingIconContentColor = Color.Transparent,
 
             ),
-        label = { Text(text) },
+        label = {
+            Text(
+                text = text,
+                maxLines = 1
+            )
+        },
         leadingIcon = {
             androidx.compose.material3.Surface(
                 color = Color(color),
@@ -174,6 +195,7 @@ fun TagItem(
                 shape = androidx.compose.foundation.shape.CircleShape,
                 modifier = Modifier.size(InputChipDefaults.AvatarSize),
             ) {
+
             }
         },
         trailingIcon = {
@@ -196,7 +218,6 @@ fun TagItem(
 fun TagsPreview() {
     Tags(
         modifier = Modifier,
-        contentPadding = PaddingValues(),
         tags = remember {
             mutableStateOf(
                 listOf(
@@ -228,6 +249,7 @@ fun TagsPreview() {
             )
         },
         onTagAdded = {},
+        onTagRemoved = {}
     )
 }
 

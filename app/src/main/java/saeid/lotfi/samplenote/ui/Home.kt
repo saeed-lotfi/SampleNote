@@ -1,6 +1,7 @@
 package saeid.lotfi.samplenote.ui
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Notes
 import androidx.compose.material.icons.automirrored.outlined.Sort
@@ -75,8 +76,7 @@ fun Home(
                 exitTransition = { AnimationConstants.exitTransition },
             ) {
                 TagsScreen(
-                    contentPadding = innerPadding,
-                    modifier = Modifier,
+                    modifier = Modifier.padding(innerPadding)
                 )
             }
         }
@@ -137,9 +137,7 @@ private fun HomeNavigationBar(
                     )
                 },
                 label = {
-                    if (selected) {
-                        Text(text = label)
-                    }
+                    Text(text = label)
                 },
             )
         }
