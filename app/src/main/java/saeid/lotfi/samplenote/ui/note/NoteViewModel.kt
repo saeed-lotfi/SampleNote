@@ -1,4 +1,4 @@
-package saeid.lotfi.samplenote.ui
+package saeid.lotfi.samplenote.ui.note
 
 import android.content.Context
 import android.widget.Toast
