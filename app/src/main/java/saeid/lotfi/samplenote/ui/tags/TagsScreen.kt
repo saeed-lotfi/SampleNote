@@ -92,7 +92,7 @@ fun Tags(
 fun TagList(
     modifier: Modifier,
     tags: State<List<TagModel>>,
-    onTagRemoved: (Long) -> Unit
+    onTagRemoved: (Long) -> Unit,
 ) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(2),
@@ -180,12 +180,11 @@ fun TagItem(
             disabledLabelColor = Color.Transparent,
             disabledLeadingIconContentColor = Color.Transparent,
             disabledTrailingIconContentColor = Color.Transparent,
-
-            ),
+        ),
         label = {
             Text(
                 text = text,
-                maxLines = 1
+                maxLines = 1,
             )
         },
         leadingIcon = {
@@ -195,7 +194,6 @@ fun TagItem(
                 shape = androidx.compose.foundation.shape.CircleShape,
                 modifier = Modifier.size(InputChipDefaults.AvatarSize),
             ) {
-
             }
         },
         trailingIcon = {
@@ -207,8 +205,7 @@ fun TagItem(
                     .clickable {
                         onTailClicked.invoke()
                     },
-
-                )
+            )
         },
     )
 }
@@ -249,7 +246,7 @@ fun TagsPreview() {
             )
         },
         onTagAdded = {},
-        onTagRemoved = {}
+        onTagRemoved = {},
     )
 }
 

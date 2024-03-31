@@ -27,8 +27,9 @@ class TagViewModel @Inject constructor(
 
     fun insertOrUpdateTag(tagModel: TagModel) {
         viewModelScope.launch {
-            if (getAllTags.value.none { it.tagTitle == tagModel.tagTitle })
+            if (getAllTags.value.none { it.tagTitle == tagModel.tagTitle }) {
                 tagRepository.insert(tagModel)
+            }
         }
     }
 }

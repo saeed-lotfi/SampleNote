@@ -76,7 +76,7 @@ fun Home(
                 exitTransition = { AnimationConstants.exitTransition },
             ) {
                 TagsScreen(
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
                 )
             }
         }
